@@ -26,7 +26,7 @@ VisualNode = (function(_super) {
     return _ref;
   }
 
-  VisualNode.diam = 30;
+  VisualNode.diam = 32;
 
   VisualNode.counter = 0;
 
@@ -49,16 +49,22 @@ VisualNode = (function(_super) {
   };
 
   VisualNode.prototype.draw = function(ctx) {
-    var offset;
+    ctx.fillStyle = 'green';
     ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
     ctx.beginPath();
-    offset = 10;
-    ctx.moveTo(this.x - offset, this.y - offset);
-    ctx.lineTo(this.x + offset, this.y + offset);
-    ctx.moveTo(this.x + offset, this.y - offset);
-    ctx.lineTo(this.x - offset, this.y + offset);
+    ctx.arc(this.x, this.y, this.constructor.diam / 2, 0, 2 * Math.PI, false);
+    ctx.fill();
     ctx.stroke();
-    return ctx.closePath();
+    ctx.closePath();
+    ctx.font = this.getFont(10);
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'center';
+    return ctx.fillText(this.data.data, this.x, this.y + 4);
+  };
+
+  VisualNode.prototype.getFont = function(size) {
+    return size + 'pt Calibri';
   };
 
   return VisualNode;
@@ -84,13 +90,13 @@ Trees = (function() {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.ctx = this.canvas.getContext('2d');
-    root = new Node(5);
-    root.left = new Node(3);
-    root.right = new Node(7);
-    root.left.left = new Node(2);
-    root.left.right = new Node(4);
-    root.right.left = new Node(6);
-    root.right.right = new Node(8);
+    root = new Node(637);
+    root.left = new Node(72);
+    root.right = new Node(903);
+    root.left.left = new Node(8);
+    root.left.right = new Node(95);
+    root.right.left = new Node(750);
+    root.right.right = new Node(5000);
     this.root = new VisualNode(root);
     this.root.init(0);
     this.draw();

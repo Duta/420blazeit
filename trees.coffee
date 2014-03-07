@@ -7,7 +7,7 @@ class Node
     @data = data
 
 class VisualNode extends Node
-  @diam: 30
+  @diam: 32
   @counter: 0
   x: null
   y: null
@@ -26,15 +26,24 @@ class VisualNode extends Node
       @right.init depth + 1
 
   draw: (ctx) ->
+    # Draw circle
+    ctx.fillStyle = 'green'
     ctx.strokeStyle = 'black'
+    ctx.lineWidth = 2
     ctx.beginPath()
-    offset = 10
-    ctx.moveTo @x - offset, @y - offset
-    ctx.lineTo @x + offset, @y + offset
-    ctx.moveTo @x + offset, @y - offset
-    ctx.lineTo @x - offset, @y + offset
+    ctx.arc @x, @y, @constructor.diam/2, 0, 2 * Math.PI, false
+    ctx.fill()
     ctx.stroke()
     ctx.closePath()
+
+    # Draw text
+    ctx.font = @getFont 10
+    ctx.fillStyle = 'black'
+    ctx.textAlign = 'center'
+    ctx.fillText @data.data, @x, @y + 4
+
+  getFont: (size) ->
+    size + 'pt Calibri'
 
 class Trees
   canvas: null
@@ -50,13 +59,13 @@ class Trees
     @height = @canvas.height
     @ctx = @canvas.getContext '2d'
 
-    root = new Node 5
-    root.left = new Node 3
-    root.right = new Node 7
-    root.left.left = new Node 2
-    root.left.right = new Node 4
-    root.right.left = new Node 6
-    root.right.right = new Node 8
+    root = new Node 637
+    root.left = new Node 72
+    root.right = new Node 903
+    root.left.left = new Node 8
+    root.left.right = new Node 95
+    root.right.left = new Node 750
+    root.right.right = new Node 5000
 
     @root = new VisualNode root
     @root.init 0
