@@ -59,19 +59,6 @@ class Trees
     @height = @canvas.height
     @ctx = @canvas.getContext '2d'
 
-    root = new Node 637
-    root.left = new Node 72
-    root.right = new Node 903
-    root.left.left = new Node 8
-    root.left.right = new Node 95
-    root.right.left = new Node 750
-    root.right.right = new Node 5000
-
-    @root = new VisualNode root
-    @root.init 0
-
-    @draw()
-
   draw: ->
     @clear()
     @ctx.lineWidth = 1
@@ -106,3 +93,27 @@ class Trees
   clear: ->
     @ctx.fillStyle = 'white'
     @ctx.fillRect 0, 0, @width, @height
+
+  parse: (input) ->
+    root = new Node 637
+    root.left = new Node 72
+    root.right = new Node 903
+    root.left.left = new Node 8
+    root.left.right = new Node 95
+    root.right.left = new Node 750
+    root.right.right = new Node 5000
+    root
+
+  update: (input) ->
+    VisualNode.counter = 0
+
+    @root = new VisualNode (@parse input)
+    @root.init 0
+
+    @draw()
+
+window.onload = ->
+  trees = new Trees
+  document.getElementById('updatebutton').onclick = ->
+    inputField = document.getElementById 'inputfield'
+    trees.update inputField.innerHTML

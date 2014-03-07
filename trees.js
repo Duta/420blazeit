@@ -85,21 +85,10 @@ Trees = (function() {
   Trees.prototype.root = null;
 
   function Trees() {
-    var root;
     this.canvas = document.getElementById('treescanvas');
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.ctx = this.canvas.getContext('2d');
-    root = new Node(637);
-    root.left = new Node(72);
-    root.right = new Node(903);
-    root.left.left = new Node(8);
-    root.left.right = new Node(95);
-    root.right.left = new Node(750);
-    root.right.right = new Node(5000);
-    this.root = new VisualNode(root);
-    this.root.init(0);
-    this.draw();
   }
 
   Trees.prototype.draw = function() {
@@ -146,6 +135,35 @@ Trees = (function() {
     return this.ctx.fillRect(0, 0, this.width, this.height);
   };
 
+  Trees.prototype.parse = function(input) {
+    var root;
+    root = new Node(637);
+    root.left = new Node(72);
+    root.right = new Node(903);
+    root.left.left = new Node(8);
+    root.left.right = new Node(95);
+    root.right.left = new Node(750);
+    root.right.right = new Node(5000);
+    return root;
+  };
+
+  Trees.prototype.update = function(input) {
+    VisualNode.counter = 0;
+    this.root = new VisualNode(this.parse(input));
+    this.root.init(0);
+    return this.draw();
+  };
+
   return Trees;
 
 })();
+
+window.onload = function() {
+  var trees;
+  trees = new Trees;
+  return document.getElementById('updatebutton').onclick = function() {
+    var inputField;
+    inputField = document.getElementById('inputfield');
+    return trees.update(inputField.innerHTML);
+  };
+};
