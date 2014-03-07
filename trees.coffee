@@ -61,15 +61,7 @@ class Trees
     @root = new VisualNode root
     @root.init 0
 
-    @test @root
-
     @draw()
-
-  test: (node) ->
-    return if node is null
-    @test node.left
-    alert node.data.data + ": " + node.x + ", " + node.y
-    @test node.right
 
   draw: ->
     @clear()

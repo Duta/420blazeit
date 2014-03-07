@@ -93,18 +93,8 @@ Trees = (function() {
     root.right.right = new Node(8);
     this.root = new VisualNode(root);
     this.root.init(0);
-    this.test(this.root);
     this.draw();
   }
-
-  Trees.prototype.test = function(node) {
-    if (node === null) {
-      return;
-    }
-    this.test(node.left);
-    alert(node.data.data + ": " + node.x + ", " + node.y);
-    return this.test(node.right);
-  };
 
   Trees.prototype.draw = function() {
     this.clear();
