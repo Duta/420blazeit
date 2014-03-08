@@ -58,6 +58,7 @@ class Trees
     @width = @canvas.width
     @height = @canvas.height
     @ctx = @canvas.getContext '2d'
+    @clear()
 
   draw: ->
     @clear()
@@ -94,21 +95,44 @@ class Trees
     @ctx.fillStyle = 'white'
     @ctx.fillRect 0, 0, @width, @height
 
-  parse: (input) ->
-    root = new Node 637
-    root.left = new Node 72
-    root.right = new Node 903
-    root.left.left = new Node 8
-    root.left.right = new Node 95
-    root.right.left = new Node 750
-    root.right.right = new Node 5000
-    root
+  parse: (str) ->
+    len = str.length
+    numLeftParens = 0
+    numRightParens = 0
+    for i in [0...len]
+      ch = str.charAt i
+      if ch is '('
+        numLeftParens++
+      else if ch is ')'
+        numRightParens++
+      else if numLeftParens == numRightParens
+        start = i
+        while ch isnt '(' and ch isnt ')' and i < len
+          ch = str.charAt ++i
+        end = i
+        rootText = str.substring start, end
+        root = new Node rootText
+        if start isnt 0 and end isnt len
+          leftText = str.substring 1, start - 1
+          rightText = str.substring end + 1, len - 1
+          root.left = @parse leftText
+          root.right = @parse rightText
+        return root
+    null
 
   update: (input) ->
     VisualNode.counter = 0
 
-    @root = new VisualNode (@parse input)
-    @root.init 0
+    # Remove all whitespace
+    input = input.replace /\s/g, ''
+
+    root = @parse input
+
+    if root is null
+      @root = null
+    else
+      @root = new VisualNode root
+      @root.init 0
 
     @draw()
 
@@ -116,4 +140,4 @@ window.onload = ->
   trees = new Trees
   document.getElementById('updatebutton').onclick = ->
     inputField = document.getElementById 'inputfield'
-    trees.update inputField.innerHTML
+    trees.update inputField.value

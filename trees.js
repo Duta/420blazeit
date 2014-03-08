@@ -89,6 +89,7 @@ Trees = (function() {
     this.width = this.canvas.width;
     this.height = this.canvas.height;
     this.ctx = this.canvas.getContext('2d');
+    this.clear();
   }
 
   Trees.prototype.draw = function() {
@@ -135,22 +136,48 @@ Trees = (function() {
     return this.ctx.fillRect(0, 0, this.width, this.height);
   };
 
-  Trees.prototype.parse = function(input) {
-    var root;
-    root = new Node(637);
-    root.left = new Node(72);
-    root.right = new Node(903);
-    root.left.left = new Node(8);
-    root.left.right = new Node(95);
-    root.right.left = new Node(750);
-    root.right.right = new Node(5000);
-    return root;
+  Trees.prototype.parse = function(str) {
+    var ch, end, i, leftText, len, numLeftParens, numRightParens, rightText, root, rootText, start, _i;
+    len = str.length;
+    numLeftParens = 0;
+    numRightParens = 0;
+    for (i = _i = 0; 0 <= len ? _i < len : _i > len; i = 0 <= len ? ++_i : --_i) {
+      ch = str.charAt(i);
+      if (ch === '(') {
+        numLeftParens++;
+      } else if (ch === ')') {
+        numRightParens++;
+      } else if (numLeftParens === numRightParens) {
+        start = i;
+        while (ch !== '(' && ch !== ')' && i < len) {
+          ch = str.charAt(++i);
+        }
+        end = i;
+        rootText = str.substring(start, end);
+        root = new Node(rootText);
+        if (start !== 0 && end !== len) {
+          leftText = str.substring(1, start - 1);
+          rightText = str.substring(end + 1, len - 1);
+          root.left = this.parse(leftText);
+          root.right = this.parse(rightText);
+        }
+        return root;
+      }
+    }
+    return null;
   };
 
   Trees.prototype.update = function(input) {
+    var root;
     VisualNode.counter = 0;
-    this.root = new VisualNode(this.parse(input));
-    this.root.init(0);
+    input = input.replace(/\s/g, '');
+    root = this.parse(input);
+    if (root === null) {
+      this.root = null;
+    } else {
+      this.root = new VisualNode(root);
+      this.root.init(0);
+    }
     return this.draw();
   };
 
@@ -164,6 +191,6 @@ window.onload = function() {
   return document.getElementById('updatebutton').onclick = function() {
     var inputField;
     inputField = document.getElementById('inputfield');
-    return trees.update(inputField.innerHTML);
+    return trees.update(inputField.value);
   };
 };
