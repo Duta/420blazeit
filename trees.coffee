@@ -193,10 +193,10 @@ window.onload = ->
   bgColorPicker.onchange = ->
     Trees.bgColor = '#' + this.color
     update trees
-  textColorPicker.color.fromString '000000'
-  nodeColorPicker.color.fromString '00ff00'
-  lineColorPicker.color.fromString '000000'
-  bgColorPicker.color.fromString   'ffffff'
+  textColorPicker.color.fromString '66180c'
+  nodeColorPicker.color.fromString '4dff7c'
+  lineColorPicker.color.fromString '31571b'
+  bgColorPicker.color.fromString   '52b4ff'
   textColorPicker.onchange()
   nodeColorPicker.onchange()
   lineColorPicker.onchange()
