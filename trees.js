@@ -28,6 +28,8 @@ VisualNode = (function(_super) {
 
   VisualNode.diam = 32;
 
+  VisualNode.margin = 20;
+
   VisualNode.counter = 0;
 
   VisualNode.prototype.x = null;
@@ -39,8 +41,8 @@ VisualNode = (function(_super) {
       this.left = new VisualNode(this.data.left);
       this.left.init(depth + 1);
     }
-    this.x = this.constructor.counter * 20 + 20;
-    this.y = depth * 50 + 20;
+    this.x = this.constructor.counter * 20 + this.constructor.margin;
+    this.y = depth * 50 + this.constructor.margin;
     this.constructor.counter++;
     if (this.data.right !== null) {
       this.right = new VisualNode(this.data.right);
@@ -49,6 +51,11 @@ VisualNode = (function(_super) {
   };
 
   VisualNode.prototype.draw = function(ctx) {
+    this.drawCircle(ctx);
+    return this.drawText(ctx);
+  };
+
+  VisualNode.prototype.drawCircle = function(ctx) {
     ctx.fillStyle = 'green';
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
@@ -56,7 +63,10 @@ VisualNode = (function(_super) {
     ctx.arc(this.x, this.y, this.constructor.diam / 2, 0, 2 * Math.PI, false);
     ctx.fill();
     ctx.stroke();
-    ctx.closePath();
+    return ctx.closePath();
+  };
+
+  VisualNode.prototype.drawText = function(ctx) {
     ctx.font = this.getFont(10);
     ctx.fillStyle = 'black';
     ctx.textAlign = 'center';
@@ -78,21 +88,21 @@ Trees = (function() {
 
   Trees.prototype.tickMs = 33;
 
-  Trees.prototype.width = 640;
+  Trees.prototype.width = 400;
 
-  Trees.prototype.height = 480;
+  Trees.prototype.height = 250;
 
   Trees.prototype.root = null;
 
   function Trees() {
     this.canvas = document.getElementById('treescanvas');
-    this.width = this.canvas.width;
-    this.height = this.canvas.height;
+    this.restoreSize();
     this.ctx = this.canvas.getContext('2d');
     this.clear();
   }
 
   Trees.prototype.draw = function() {
+    this.resize();
     this.clear();
     this.ctx.lineWidth = 1;
     this.drawLink(this.root);
@@ -134,6 +144,40 @@ Trees = (function() {
   Trees.prototype.clear = function() {
     this.ctx.fillStyle = 'white';
     return this.ctx.fillRect(0, 0, this.width, this.height);
+  };
+
+  Trees.prototype.restoreSize = function() {
+    this.canvas.width = this.width;
+    return this.canvas.height = this.height;
+  };
+
+  Trees.prototype.resize = function() {
+    this.canvas.width = this.getMaxX() + VisualNode.margin;
+    return this.canvas.height = this.getMaxY() + VisualNode.margin;
+  };
+
+  Trees.prototype.getMaxX = function() {
+    var node;
+    node = this.root;
+    while (node.right !== null) {
+      node = node.right;
+    }
+    return node.x;
+  };
+
+  Trees.prototype.getMaxY = function() {
+    var helper;
+    helper = function(node, maxY) {
+      maxY = Math.max(maxY, node.y);
+      if (node.left !== null) {
+        maxY = Math.max(maxY, helper(node.left, maxY));
+      }
+      if (node.right !== null) {
+        maxY = Math.max(maxY, helper(node.right, maxY));
+      }
+      return maxY;
+    };
+    return helper(this.root, 0);
   };
 
   Trees.prototype.parse = function(str) {

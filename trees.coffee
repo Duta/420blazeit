@@ -8,6 +8,7 @@ class Node
 
 class VisualNode extends Node
   @diam: 32
+  @margin: 20
   @counter: 0
   x: null
   y: null
@@ -17,8 +18,8 @@ class VisualNode extends Node
       @left = new VisualNode @data.left
       @left.init depth + 1
 
-    @x = @constructor.counter * 20 + 20
-    @y = depth * 50 + 20
+    @x = @constructor.counter * 20 + @constructor.margin
+    @y = depth * 50 + @constructor.margin
     @constructor.counter++
 
     if @data.right isnt null
@@ -26,7 +27,10 @@ class VisualNode extends Node
       @right.init depth + 1
 
   draw: (ctx) ->
-    # Draw circle
+    @drawCircle ctx
+    @drawText ctx
+
+  drawCircle: (ctx) ->
     ctx.fillStyle = 'green'
     ctx.strokeStyle = 'black'
     ctx.lineWidth = 2
@@ -36,7 +40,7 @@ class VisualNode extends Node
     ctx.stroke()
     ctx.closePath()
 
-    # Draw text
+  drawText: (ctx) ->
     ctx.font = @getFont 10
     ctx.fillStyle = 'black'
     ctx.textAlign = 'center'
@@ -49,18 +53,18 @@ class Trees
   canvas: null
   ctx: null
   tickMs: 33
-  width: 640
-  height: 480
+  width: 400
+  height: 250
   root: null
 
   constructor: ->
     @canvas = document.getElementById 'treescanvas'
-    @width = @canvas.width
-    @height = @canvas.height
+    @restoreSize()
     @ctx = @canvas.getContext '2d'
     @clear()
 
   draw: ->
+    @resize()
     @clear()
     @ctx.lineWidth = 1
     @drawLink @root
@@ -68,11 +72,9 @@ class Trees
 
   drawLink: (node) ->
     return if node is null
-
     if node.left isnt null
       @drawLine 'black', node.x, node.y, node.left.x, node.left.y
       @drawLink node.left
-
     if node.right isnt null
       @drawLine 'black', node.x, node.y, node.right.x, node.right.y
       @drawLink node.right
@@ -94,6 +96,27 @@ class Trees
   clear: ->
     @ctx.fillStyle = 'white'
     @ctx.fillRect 0, 0, @width, @height
+
+  restoreSize: ->
+    @canvas.width = @width
+    @canvas.height = @height
+
+  resize: ->
+    @canvas.width = @getMaxX() + VisualNode.margin
+    @canvas.height = @getMaxY() + VisualNode.margin
+
+  getMaxX: ->
+    node = @root
+    node = node.right while node.right isnt null
+    return node.x
+
+  getMaxY: ->
+    helper = (node, maxY) ->
+      maxY = Math.max maxY, node.y
+      maxY = Math.max maxY, helper node.left, maxY if node.left isnt null
+      maxY = Math.max maxY, helper node.right, maxY if node.right isnt null
+      maxY
+    helper @root, 0
 
   parse: (str) ->
     len = str.length
@@ -122,18 +145,13 @@ class Trees
 
   update: (input) ->
     VisualNode.counter = 0
-
-    # Remove all whitespace
-    input = input.replace /\s/g, ''
-
+    input = input.replace /\s/g, '' # Remove all whitespace
     root = @parse input
-
     if root is null
       @root = null
     else
       @root = new VisualNode root
       @root.init 0
-
     @draw()
 
 window.onload = ->
