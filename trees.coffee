@@ -1,5 +1,3 @@
-getById: document.getElementById
-
 class Node
   data: null
   left: null
