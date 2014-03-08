@@ -86,13 +86,13 @@ Trees = (function() {
 
   Trees.prototype.ctx = null;
 
+  Trees.prototype.root = null;
+
   Trees.prototype.tickMs = 33;
 
   Trees.prototype.width = 400;
 
   Trees.prototype.height = 250;
-
-  Trees.prototype.root = null;
 
   function Trees() {
     this.canvas = document.getElementById('treescanvas');
@@ -107,6 +107,12 @@ Trees = (function() {
     this.ctx.lineWidth = 1;
     this.drawLink(this.root);
     return this.drawNode(this.root);
+  };
+
+  Trees.prototype.save = function() {
+    return this.canvas.toBlob(function(blob) {
+      return saveAs(blob, 'tree.png');
+    });
   };
 
   Trees.prototype.drawLink = function(node) {
@@ -232,9 +238,12 @@ Trees = (function() {
 window.onload = function() {
   var trees;
   trees = new Trees;
-  return document.getElementById('updatebutton').onclick = function() {
+  document.getElementById('updatebutton').onclick = function() {
     var inputField;
     inputField = document.getElementById('inputfield');
     return trees.update(inputField.value);
+  };
+  return document.getElementById('savebutton').onclick = function() {
+    return trees.save();
   };
 };

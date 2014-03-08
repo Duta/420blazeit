@@ -52,10 +52,10 @@ class VisualNode extends Node
 class Trees
   canvas: null
   ctx: null
+  root: null
   tickMs: 33
   width: 400
   height: 250
-  root: null
 
   constructor: ->
     @canvas = document.getElementById 'treescanvas'
@@ -69,6 +69,9 @@ class Trees
     @ctx.lineWidth = 1
     @drawLink @root
     @drawNode @root
+
+  save: ->
+    @canvas.toBlob (blob) -> saveAs blob, 'tree.png'
 
   drawLink: (node) ->
     return if node is null
@@ -159,3 +162,4 @@ window.onload = ->
   document.getElementById('updatebutton').onclick = ->
     inputField = document.getElementById 'inputfield'
     trees.update inputField.value
+  document.getElementById('savebutton').onclick = -> trees.save()

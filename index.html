@@ -7,7 +7,7 @@
     body {
       background-color: gray;
     }
-    canvas {
+    #treescanvas {
       position: absolute;
       top: 0;
       bottom: 0;
@@ -15,25 +15,27 @@
       right: 0;
       margin: auto;
       border: 1px solid black;
-      display: block;
     }
     #inputdiv {
       width: 100%;
       text-align: center;
     }
-    #inputfield, #updatebutton {
+    #inputdiv > * {
       vertical-align: middle;
     }
   </style>
 
+  <script src='canvas-toBlob.js' type='text/javascript'></script>
+  <script src='FileSaver.js' type='text/javascript'></script>
   <script src='trees.js' type='text/javascript'></script>
 </head>
 <body>
   <div id='inputdiv'>
     <textarea autofocus id='inputfield'>((1) 2 (3)) 4 ((5) 6 (7))</textarea>
     <button id='updatebutton'>Update</button>
+    <button id='savebutton'>Save</button>
   </div>
-  <canvas id='treescanvas' width='480' height='300'>
+  <canvas id='treescanvas'>
     Your browser isn't supported - please
     consider upgrading. Trust me, it's worth it.
   </canvas>
