@@ -7,6 +7,9 @@
     body {
       background-color: gray;
     }
+    #inputfield {
+      width: 200px;
+    }
     #treescanvas {
       position: absolute;
       top: 0;
@@ -16,24 +19,41 @@
       margin: auto;
       border: 1px solid black;
     }
-    #inputdiv {
+    .centeringdiv {
       width: 100%;
       text-align: center;
     }
-    #inputdiv > * {
+    .centeringdiv > * {
       vertical-align: middle;
     }
   </style>
 
   <script src='libs/canvas-toBlob.js' type='text/javascript'></script>
   <script src='libs/FileSaver.js' type='text/javascript'></script>
+  <script src='libs/jscolor.js' type='text/javascript'></script>
   <script src='trees.js' type='text/javascript'></script>
 </head>
 <body>
-  <div id='inputdiv'>
+  <div class='centeringdiv'>
     <textarea autofocus id='inputfield'>((1) 2 (3)) 4 ((5) 6 (7))</textarea>
     <button id='updatebutton'>Update</button>
     <button id='savebutton'>Save</button>
+  </div>
+  <div class='centeringdiv'>
+    <label for='textcolor'>Text Color:</label>
+    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='textcolor'>
+  </div>
+  <div class='centeringdiv'>
+    <label for='nodecolor'>Node Color:</label>
+    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='nodecolor'>
+  </div>
+  <div class='centeringdiv'>
+    <label for='linecolor'>Line Color:</label>
+    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='linecolor'>
+  </div>
+  <div class='centeringdiv'>
+    <label for='bgcolor'>Background Color:</label>
+    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='bgcolor'>
   </div>
   <canvas id='treescanvas'>
     Your browser isn't supported - please

@@ -1,3 +1,5 @@
+getById: document.getElementById
+
 class Node
   data: null
   left: null
@@ -8,6 +10,9 @@ class Node
 
 class VisualNode extends Node
   @diam: 32
+  @nodeColor: null
+  @lineColor: null
+  @textColor: null
   @margin: 20
   @counter: 0
   x: null
@@ -31,8 +36,8 @@ class VisualNode extends Node
     @drawText ctx
 
   drawCircle: (ctx) ->
-    ctx.fillStyle = 'green'
-    ctx.strokeStyle = 'black'
+    ctx.fillStyle = @constructor.nodeColor
+    ctx.strokeStyle = @constructor.lineColor
     ctx.lineWidth = 2
     ctx.beginPath()
     ctx.arc @x, @y, @constructor.diam/2, 0, 2 * Math.PI, false
@@ -42,7 +47,7 @@ class VisualNode extends Node
 
   drawText: (ctx) ->
     ctx.font = @getFont 10
-    ctx.fillStyle = 'black'
+    ctx.fillStyle = @constructor.textColor
     ctx.textAlign = 'center'
     ctx.fillText @data.data, @x, @y + 4
 
@@ -50,6 +55,8 @@ class VisualNode extends Node
     size + 'pt Calibri'
 
 class Trees
+  @bgColor: null
+  @lineColor: null
   canvas: null
   ctx: null
   root: null
@@ -76,10 +83,10 @@ class Trees
   drawLink: (node) ->
     return if node is null
     if node.left isnt null
-      @drawLine 'black', node.x, node.y, node.left.x, node.left.y
+      @drawLine @constructor.lineColor, node.x, node.y, node.left.x, node.left.y
       @drawLink node.left
     if node.right isnt null
-      @drawLine 'black', node.x, node.y, node.right.x, node.right.y
+      @drawLine @constructor.lineColor, node.x, node.y, node.right.x, node.right.y
       @drawLink node.right
 
   drawNode: (node) ->
@@ -97,7 +104,7 @@ class Trees
     @ctx.closePath()
 
   clear: ->
-    @ctx.fillStyle = 'white'
+    @ctx.fillStyle = @constructor.bgColor
     @ctx.fillRect 0, 0, @width, @height
 
   restoreSize: ->
@@ -157,9 +164,40 @@ class Trees
       @root.init 0
     @draw()
 
-window.onload = ->
-  trees = new Trees
-  document.getElementById('updatebutton').onclick = ->
+update = (trees) ->
     inputField = document.getElementById 'inputfield'
     trees.update inputField.value
+
+window.onload = ->
+  trees = new Trees
+
+  # Updating and saving
+  document.getElementById('updatebutton').onclick = -> update trees
   document.getElementById('savebutton').onclick = -> trees.save()
+
+  # Colors
+  textColorPicker = document.getElementById 'textcolor'
+  nodeColorPicker = document.getElementById 'nodecolor'
+  lineColorPicker = document.getElementById 'linecolor'
+  bgColorPicker   = document.getElementById 'bgcolor'
+  textColorPicker.onchange = ->
+    VisualNode.textColor = '#' + this.color
+    update trees
+  nodeColorPicker.onchange = ->
+    VisualNode.nodeColor = '#' + this.color
+    update trees
+  lineColorPicker.onchange = ->
+    VisualNode.lineColor = '#' + this.color
+    Trees.lineColor = '#' + this.color
+    update trees
+  bgColorPicker.onchange = ->
+    Trees.bgColor = '#' + this.color
+    update trees
+  textColorPicker.color.fromString '000000'
+  nodeColorPicker.color.fromString '00ff00'
+  lineColorPicker.color.fromString '000000'
+  bgColorPicker.color.fromString   'ffffff'
+  textColorPicker.onchange()
+  nodeColorPicker.onchange()
+  lineColorPicker.onchange()
+  bgColorPicker.onchange()
