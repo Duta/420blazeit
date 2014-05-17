@@ -59,12 +59,9 @@ class Trees
   ctx: null
   root: null
   tickMs: 33
-  width: 400
-  height: 250
 
   constructor: ->
     @canvas = document.getElementById 'treescanvas'
-    @restoreSize()
     @ctx = @canvas.getContext '2d'
     @clear()
 
@@ -103,11 +100,7 @@ class Trees
 
   clear: ->
     @ctx.fillStyle = @constructor.bgColor
-    @ctx.fillRect 0, 0, @width, @height
-
-  restoreSize: ->
-    @canvas.width = @width
-    @canvas.height = @height
+    @ctx.fillRect 0, 0, @canvas.width, @canvas.height
 
   resize: ->
     @canvas.width = @getMaxX() + VisualNode.margin
@@ -116,7 +109,7 @@ class Trees
   getMaxX: ->
     node = @root
     node = node.right while node.right isnt null
-    return node.x
+    node.x
 
   getMaxY: ->
     helper = (node, maxY) ->

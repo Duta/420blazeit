@@ -100,13 +100,8 @@ Trees = (function() {
 
   Trees.prototype.tickMs = 33;
 
-  Trees.prototype.width = 400;
-
-  Trees.prototype.height = 250;
-
   function Trees() {
     this.canvas = document.getElementById('treescanvas');
-    this.restoreSize();
     this.ctx = this.canvas.getContext('2d');
     this.clear();
   }
@@ -159,12 +154,7 @@ Trees = (function() {
 
   Trees.prototype.clear = function() {
     this.ctx.fillStyle = this.constructor.bgColor;
-    return this.ctx.fillRect(0, 0, this.width, this.height);
-  };
-
-  Trees.prototype.restoreSize = function() {
-    this.canvas.width = this.width;
-    return this.canvas.height = this.height;
+    return this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   };
 
   Trees.prototype.resize = function() {
