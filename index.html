@@ -5,7 +5,17 @@
 
   <style>
     body {
-      background-color: gray;
+      background-color: black;
+      text-align: center;
+    }
+    body > h1 {
+      color: white;
+    }
+    #maincontent {
+      background-color: white;
+      display: inline-block;
+      border-radius: 10px;
+      padding: 15px;
     }
     #inputfield {
       width: 250px;
@@ -20,7 +30,7 @@
     .centeringdiv > * {
       vertical-align: middle;
     }
-    label {
+    label, h1 {
       font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
     }
   </style>
@@ -31,32 +41,37 @@
   <script src='trees.js' type='text/javascript'></script>
 </head>
 <body>
-  <div class='centeringdiv'>
-    <textarea autofocus id='inputfield'>(() cat (dog)) 5.75 ((1) 2 (3))</textarea>
-    <button id='updatebutton'>Update</button>
-    <button id='savebutton'>Save</button>
-  </div>
-  <div class='centeringdiv'>
-    <label for='textcolor'>Text Color:</label>
-    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='textcolor'>
-  </div>
-  <div class='centeringdiv'>
-    <label for='nodecolor'>Node Color:</label>
-    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='nodecolor'>
-  </div>
-  <div class='centeringdiv'>
-    <label for='linecolor'>Line Color:</label>
-    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='linecolor'>
-  </div>
-  <div class='centeringdiv'>
-    <label for='bgcolor'>Background Color:</label>
-    <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='bgcolor'>
-  </div>
-  <div class='centeringdiv'>
-    <canvas id='treescanvas'>
-      Your browser isn't supported - please
-      consider upgrading. Trust me, it's worth it.
-    </canvas>
+  <h1>
+    #420blazeit
+  </h1>
+  <div id='maincontent'>
+    <div class='centeringdiv'>
+      <textarea autofocus id='inputfield'>(() cat (dog)) 5.75 ((1) 2 (3))</textarea>
+      <button id='updatebutton'>Update</button>
+      <button id='savebutton'>Save</button>
+    </div>
+    <div class='centeringdiv'>
+      <label for='textcolor'>Text Color:</label>
+      <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='textcolor'>
+    </div>
+    <div class='centeringdiv'>
+      <label for='nodecolor'>Node Color:</label>
+      <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='nodecolor'>
+    </div>
+    <div class='centeringdiv'>
+      <label for='linecolor'>Line Color:</label>
+      <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='linecolor'>
+    </div>
+    <div class='centeringdiv'>
+      <label for='bgcolor'>Background Color:</label>
+      <input class='color {hash:true,caps:false,pickerFaceColor:"transparent",pickerFace:3,pickerBorder:0,pickerInsetColor:"black"}' id='bgcolor'>
+    </div>
+    <div class='centeringdiv'>
+      <canvas id='treescanvas'>
+        Your browser isn't supported - please
+        consider upgrading. Trust me, it's worth it.
+      </canvas>
+    </div>
   </div>
 </body>
 </html>
